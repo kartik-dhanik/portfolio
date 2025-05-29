@@ -25,7 +25,7 @@ const urls = [
     label: "Visual Identity Design"
   },
   {
-    href: "https://drive.google.com/file/d/1J3GYr3fJaAQF8o1JdInRNzHHk4KnSbeY/view",
+    href: "https://drive.google.com/file/d/13cjgLE-YSDfzVmM1vX0T5-5wvwAemRAa/view?usp=sharing",
     text: "UI/UX Project",
     label: "LinkedIn App Redesign"
   },
