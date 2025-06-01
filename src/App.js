@@ -167,11 +167,11 @@ const App = () => {
 
 
       {/* Hero Section */}
-      <section style={{ display: "flex", justifyContent: "center", padding: "2rem 0" }}>
+      <section style={{ display: "flex", justifyContent: "center", padding: "1rem 0" }}>
         <img
-          src="https://cdn.dribbble.com/userupload/25965334/file/original-d3e54095f239f0e2a08368e325e1adde.gif"
+          src="https://cdn.dribbble.com/userupload/28117148/file/original-c0db2041822a946b9529b5ae1fdf08e8.gif"
           alt="Hero Animation"
-          style={{ width: "100%", height: "80%" }}
+          style={{ width: "100%", height: "650px" }}
         />
       </section>
 
