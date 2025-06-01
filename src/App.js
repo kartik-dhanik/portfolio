@@ -213,8 +213,9 @@ const App = () => {
           grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
           justify-content: center;
           align-items: center;
-          gap: 1rem 10rem;
+          gap: 2rem 10rem;
           list-style: none;
+          width: 92%;
         }
         .project-item a {
           background: #222;
