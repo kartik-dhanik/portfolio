@@ -292,12 +292,12 @@ const App = () => {
           color: #ff91c8;
           background: #fff;
           border-radius: 50%;
-          padding: 0.35rem 0.45rem;
+          padding: 2px 4px 8px 8px;
           box-shadow: 0 1px 4px #ff91c855, 0 1px 2px #0002;
           transition: background 0.18s, color 0.18s, transform 0.18s;
           text-decoration: none;
-          width: 26px;
-          height: 32px;
+          width: 28px;
+          height: 28px;
         }
         .icons a:hover, .icons a:focus {
           background: #ff91c8;
