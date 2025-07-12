@@ -11,7 +11,7 @@ import { FaEnvelope, FaLinkedin, FaInstagram } from 'react-icons/fa';
 const carouselImages = [ "/report.png", "/raso.png", "/chingu.png", "/linkedin.png", "/ww.png"];
 
 const urls = [
-  { href: "https://drive.google.com/file/d/1ovHVmMd_KzrpOUTDHHNLinjGCxAuEXr4/view?usp=drive_link", text: "Digit Insurance", label: "Internship Report" },
+  { href: "https://drive.google.com/file/d/13Fg22wdEEZ2m5CDq14QiM7T3TsO_Ij2F/view?usp=drivesdk", text: "Digit Insurance", label: "Internship Report" },
   { href: "https://drive.google.com/file/d/1ovHVmMd_KzrpOUTDHHNLinjGCxAuEXr4/view?usp=drive_link", text: "Rasotsav", label: "Packaging Design" },
   { href: "https://drive.google.com/file/d/1smoCwsgsfOwxwbtr66sgXPV3fz9DLn_H/view", text: "Chingu", label: "Visual Identity Design" },
   { href: "https://drive.google.com/file/d/1J3GYr3fJaAQF8o1JdInRNzHHk4KnSbeY/view", text: "UI/UX Project", label: "LinkedIn App Redesign" },
