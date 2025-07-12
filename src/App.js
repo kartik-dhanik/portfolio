@@ -8,9 +8,10 @@ import { Navigation, EffectCoverflow } from "swiper/modules";
 import "swiper/css/effect-coverflow";
 import { FaEnvelope, FaLinkedin, FaInstagram } from 'react-icons/fa';
 
-const carouselImages = ["/raso.png", "/chingu.png", "/linkedin.png", "/ww.png"];
+const carouselImages = [ "/report.png", "/raso.png", "/chingu.png", "/linkedin.png", "/ww.png"];
 
 const urls = [
+  { href: "https://drive.google.com/file/d/1ovHVmMd_KzrpOUTDHHNLinjGCxAuEXr4/view?usp=drive_link", text: "Digit Insurance", label: "Internship Report" },
   { href: "https://drive.google.com/file/d/1ovHVmMd_KzrpOUTDHHNLinjGCxAuEXr4/view?usp=drive_link", text: "Rasotsav", label: "Packaging Design" },
   { href: "https://drive.google.com/file/d/1smoCwsgsfOwxwbtr66sgXPV3fz9DLn_H/view", text: "Chingu", label: "Visual Identity Design" },
   { href: "https://drive.google.com/file/d/1J3GYr3fJaAQF8o1JdInRNzHHk4KnSbeY/view", text: "UI/UX Project", label: "LinkedIn App Redesign" },
@@ -75,16 +76,49 @@ const App = () => {
     setCurrentIndex(index);
   };
 
+  // Touch swipe state for mobile
+  const [touchStartX, setTouchStartX] = useState(null);
+  const [touchEndX, setTouchEndX] = useState(null);
+
+  const handleTouchStart = (e) => {
+    setTouchStartX(e.touches[0].clientX);
+    setTouchEndX(null);
+  };
+
+  const handleTouchMove = (e) => {
+    setTouchEndX(e.touches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (touchStartX === null || touchEndX === null) return;
+    const distance = touchStartX - touchEndX;
+    if (distance > 50) {
+      // swipe left
+      goToIndex((currentIndex + 1) % carouselImages.length);
+    } else if (distance < -50) {
+      // swipe right
+      goToIndex((currentIndex - 1 + carouselImages.length) % carouselImages.length);
+    }
+    setTouchStartX(null);
+    setTouchEndX(null);
+  };
+
   return (
     <div className="app-container">
       <header className="header">
-        <div className="title">
-          <h1>Dnyaneshwari Mandape</h1>
-          <p>Graphic Designer | Product Designer | Visual Communication</p>
-        </div>
-        <div className="icons" style={{display: "flex"}}>
-          <a href="https://www.linkedin.com/in/dnyaneshwari-mandape-939015244/" target="_blank" rel="noopener noreferrer"><FaLinkedin size={24} /></a>
-          <a href="mailto:sydnyaneshwari@gmail.com" target="_blank" rel="noopener noreferrer"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#EA3323"><path d="M0 0h24v24H0z" fill="none"/><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></a>
+        <div className="header-bg"></div>
+        <div className="header-content">
+          {/* <div className="avatar">
+            <img src="/portfolio.png" alt="Dnyaneshwari Mandape" />
+          </div> */}
+          <div className="title">
+            <h1>Dnyaneshwari Mandape</h1>
+            <p>Graphic Designer | Product Designer | Visual Communication</p>
+          </div>
+          <div className="icons">
+            <a href="https://www.linkedin.com/in/dnyaneshwari-mandape-939015244/" target="_blank" rel="noopener noreferrer" title="LinkedIn"><FaLinkedin size={24} /></a>
+            <a href="mailto:sydnyaneshwari@gmail.com" target="_blank" rel="noopener noreferrer" title="Email"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#EA3323"><path d="M0 0h24v24H0z" fill="none"/><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></a>
+          </div>
         </div>
       </header>
 
@@ -95,17 +129,33 @@ const App = () => {
       <section className="projects">
         <h2>Design Projects</h2>
         <ul className="project-list">
-          {urls.map((item, idx) => (
-            <li key={idx} className="project-item">
-              <a href={item.href} target="_blank" rel="noopener noreferrer">{item.text}</a>
-              <p style={{fontSize: "Larger"}}>- {item.label}</p>
+          {urls.slice(1).map((item, idx) => (
+            <li key={idx + 1} className="project-item">
+              <a href={item.href} target="_blank" rel="noopener noreferrer">
+                <div className="project-card">
+                  <div className="project-icon">🎨</div>
+                  <div className="project-info">
+                    <span className="project-title">{item.text}</span>
+                    <span className="project-label">{item.label}</span>
+                  </div>
+                  <span className="project-arrow">→</span>
+                </div>
+              </a>
             </li>
           ))}
         </ul>
       </section>
 
       <section className="carousel">
-        <div className="carousel-wrapper" style={{ transform: `translateZ(-300px) rotateY(${angle}deg)` }}>
+        {/* <h2 className="carousel-heading">Click an image to view</h2> */}
+        <div
+          className="carousel-wrapper"
+          style={{ transform: `translateZ(-300px) rotateY(${angle}deg)` }}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
+
           {carouselImages.map((src, idx) => (
             <div
               key={idx}
@@ -113,10 +163,14 @@ const App = () => {
               style={{ transform: `rotateY(${idx * theta}deg) translateZ(300px)` }}
               onClick={() => window.open(urls[idx].href, "_blank")}
             >
-              <img src={src} alt={`Slide ${idx}`} />
+              <div className="carousel-img-wrapper">
+                <img src={src} alt={`Slide ${idx}`} />
+                {/* <span className="carousel-click-icon" title="Click to view project">🔗</span> */}
+              </div>
             </div>
           ))}
         </div>
+
         <div className="dots">
           {carouselImages.map((_, idx) => (
             <div
@@ -164,24 +218,92 @@ const App = () => {
       </section>
 
       <style jsx>{`
+        :global(body) {
+          overflow-x: hidden;
+        }
         .app-container {
           font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
           color: #fff;
           background: #fff;
           padding: 0 1rem;
-          max-width: 1200px;
+          max-width: 100vw;
+          box-sizing: border-box;
           margin: auto;
+          overflow-x: hidden;
         }
         .header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 1rem 0;
-          border-bottom: 1.5px solid #ff91c8;
+          position: relative;
+          padding: 0;
+          margin-bottom: 1.5rem;
         }
-        .title h1 { color: #ff91c8; font-size: 2rem; margin: 0; }
-        .title p { font-size: 1.1rem; color: black; }
-        .icons a { margin-left: 1rem; font-size: 1.5rem; text-decoration: none; }
+        .header-bg {
+          position: absolute;
+          top: 0; left: 0; right: 0; bottom: 0;
+          background: linear-gradient(90deg, #ff91c8 0%, #232526 100%);
+          opacity: 0.13;
+          z-index: 0;
+          border-bottom: 2px solid #ff91c8;
+        }
+        .header-content {
+          position: relative;
+          z-index: 1;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 1.2rem 0.5rem 1.2rem 0.5rem;
+          gap: 1.5rem;
+        }
+        .avatar {
+          width: 64px;
+          height: 64px;
+          border-radius: 50%;
+          overflow: hidden;
+          box-shadow: 0 2px 8px #ff91c855, 0 1px 2px #0002;
+          border: 2.5px solid #ff91c8;
+          background: #fff;
+          flex-shrink: 0;
+          margin-right: 1.2rem;
+        }
+        .avatar img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+        .title h1 {
+          color: #ff91c8;
+          font-size: 2rem;
+          margin: 0 0 0.2rem 0;
+          letter-spacing: 0.5px;
+        }
+        .title p {
+          font-size: 1.1rem;
+          color: #232526;
+          margin: 0;
+          font-weight: 500;
+        }
+        .icons {
+          display: flex;
+          align-items: center;
+          gap: 1.2rem;
+          width: "100%";
+        }
+        .icons a {
+          font-size: 1.7rem;
+          color: #ff91c8;
+          background: #fff;
+          border-radius: 50%;
+          padding: 0.35rem 0.45rem;
+          box-shadow: 0 1px 4px #ff91c855, 0 1px 2px #0002;
+          transition: background 0.18s, color 0.18s, transform 0.18s;
+          text-decoration: none;
+          width: 26px;
+          height: 32px;
+        }
+        .icons a:hover, .icons a:focus {
+          background: #ff91c8;
+          color: #fff;
+          transform: scale(1.12);
+        }
 
         .hero img { width: 100%; max-height: 600px; object-fit: cover; margin-top: 30px; }
 
@@ -199,6 +321,13 @@ const App = () => {
           background: rgba(18, 18, 18, 0.85);
           border-radius: 8px;
         }
+        .carousel-heading {
+          text-align: center;
+          color: #ff91c8;
+          font-size: 1.5rem;
+          margin-bottom: 1rem;
+          letter-spacing: 0.5px;
+        }
         .projects h2 {
           position: relative;
           color: #ff91c8;
@@ -210,25 +339,75 @@ const App = () => {
           position: relative;
           z-index: 1;
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+          grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
           justify-content: center;
-          align-items: center;
-          gap: 2rem 10rem;
+          align-items: stretch;
+          gap: 2rem 2rem;
           list-style: none;
-          width: 92%;
+          width: 100%;
+          box-sizing: border-box;
+          padding: 0;
+        }
+        .project-item {
+          display: flex;
+          align-items: stretch;
         }
         .project-item a {
-          background: #222;
-          padding: 0.5rem 1rem;
-          border-radius: 8px;
-          color: #ff91c8;
+          display: block;
+          width: 100%;
           text-decoration: none;
-          transition: 0.3s;
-          font-size: Larger;
+          color: inherit;
         }
-        .project-item a:hover {
-          background: #333;
-          transform: scale(1.03);
+        .project-card {
+          display: flex;
+          align-items: center;
+          background: linear-gradient(120deg, #232526 0%, #414345 100%);
+          border-radius: 16px;
+          box-shadow: 0 4px 24px 0 rgba(0,0,0,0.10), 0 1.5px 6px 0 rgba(255,145,200,0.10);
+          padding: 1.2rem 1.5rem;
+          transition: transform 0.18s, box-shadow 0.18s, background 0.18s;
+          position: relative;
+          min-height: 90px;
+        }
+        .project-item a:hover .project-card, .project-item a:focus .project-card {
+          background: linear-gradient(120deg, #ff91c8 0%, #232526 100%);
+          transform: translateY(-4px) scale(1.03);
+          box-shadow: 0 8px 32px 0 rgba(255,145,200,0.18), 0 2px 8px 0 rgba(0,0,0,0.12);
+        }
+        .project-icon {
+          font-size: 2.2rem;
+          margin-right: 1.2rem;
+          flex-shrink: 0;
+          color: #ff91c8;
+          filter: drop-shadow(0 1px 2px #0002);
+        }
+        .project-info {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          gap: 0.2rem;
+        }
+        .project-title {
+          font-size: 1.18rem;
+          font-weight: 600;
+          color: #fff;
+          letter-spacing: 0.2px;
+        }
+        .project-label {
+          font-size: 1rem;
+          color: #ff91c8;
+          opacity: 0.92;
+        }
+        .project-arrow {
+          font-size: 1.5rem;
+          margin-left: 1.2rem;
+          color: #fff;
+          opacity: 0.7;
+          transition: opacity 0.2s, transform 0.2s;
+        }
+        .project-item a:hover .project-arrow, .project-item a:focus .project-arrow {
+          opacity: 1;
+          transform: translateX(6px);
         }
         .carousel {
           margin: 2rem auto;
@@ -254,12 +433,40 @@ const App = () => {
           transition: transform 1s;
           cursor: pointer;
         }
+        .carousel-img-wrapper {
+          position: relative;
+          width: 100%;
+          height: 100%;
+        }
         .carousel-slide img {
           width: 100%;
           height: 100%;
           object-fit: cover;
           border-radius: 12px;
           box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+          transition: box-shadow 0.3s, filter 0.3s;
+        }
+        .carousel-slide:hover img,
+        .carousel-slide:focus img {
+          box-shadow: 0 0 0 4px #ff91c8, 0 10px 20px rgba(0,0,0,0.3);
+          filter: brightness(0.95) saturate(1.2);
+        }
+        .carousel-click-icon {
+          position: absolute;
+          bottom: 12px;
+          right: 16px;
+          background: rgba(255,255,255,0.85);
+          color: #ff91c8;
+          border-radius: 50%;
+          padding: 4px 6px;
+          font-size: 1.3rem;
+          pointer-events: none;
+          opacity: 0.85;
+          transition: opacity 0.2s;
+        }
+        .carousel-slide:hover .carousel-click-icon,
+        .carousel-slide:focus .carousel-click-icon {
+          opacity: 1;
         }
         .dots {
           display: flex;
@@ -300,7 +507,9 @@ const App = () => {
           .title h1 { font-size: 1.5rem; }
           .hero img { height: auto; }
           .carousel-wrapper { height: 300px; }
-          .carousel-slide { width: 250px; height: 150px; }
+          .carousel-slide { width: 250px; height: 180px; }
+          .app-container { padding: 0 0.5rem; max-width: 100vw; }
+          .project-list { grid-template-columns: 1fr; gap: 1.2rem; }
         }
       `}</style>
     </div>
